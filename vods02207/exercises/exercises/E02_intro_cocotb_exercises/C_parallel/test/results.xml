@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1758032711" />
+    <testcase name="drive_signals" classname="parallel_test" file="/home/madsrichardt/sem7/vods02207/exercises/exercises/E02_intro_cocotb_exercises/C_parallel/test/parallel_test.py" lineno="15" time="0.014111042022705078" sim_time_ns="1060.001" ratio_time="75118.54888493901" />
+  </testsuite>
+</testsuites>
