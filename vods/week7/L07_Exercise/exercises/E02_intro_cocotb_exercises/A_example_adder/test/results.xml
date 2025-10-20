@@ -1,0 +1,7 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1760964968" />
+    <testcase name="adder_basic_test" classname="test_adder" file="/home/madsr2d2/sem7/vods/week7/L07_Exercise/exercises/E02_intro_cocotb_exercises/A_example_adder/test/test_adder.py" lineno="9" time="0.0003418922424316406" sim_time_ns="2.0" ratio_time="5849.796373779637" />
+    <testcase name="adder_randomised_test" classname="test_adder" file="/home/madsr2d2/sem7/vods/week7/L07_Exercise/exercises/E02_intro_cocotb_exercises/A_example_adder/test/test_adder.py" lineno="26" time="0.0003581047058105469" sim_time_ns="20.0" ratio_time="55849.58721704394" />
+  </testsuite>
+</testsuites>
