@@ -1,7 +1,0 @@
-<testsuites name="results">
-  <testsuite name="all" package="all">
-    <property name="random_seed" value="1758012095" />
-    <testcase name="mux_basic_test" classname="basic_test" file="/home/madsrichardt/sem7/vods02207/exercises/exercises/E02_intro_cocotb_exercises/B_mux/test/basic_test.py" lineno="11" time="0.0033881664276123047" sim_time_ns="50.001" ratio_time="14757.539533037787" />
-    <testcase name="mux_randomised_test" classname="basic_test" file="/home/madsrichardt/sem7/vods02207/exercises/exercises/E02_intro_cocotb_exercises/B_mux/test/basic_test.py" lineno="36" time="0.003332853317260742" sim_time_ns="300.00100000000003" ratio_time="90013.26234380143" />
-  </testsuite>
-</testsuites>

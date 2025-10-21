@@ -12,7 +12,7 @@ VERILOG_SOURCES += $(PWD)/../rtl/mux.sv
 TOPLEVEL := mux
 
 # MODULE is the basename of the Python test file
-MODULE   := <your_test_name>
+COCOTB_TEST_MODULES   := test_mux
 
 # include cocotb's make rules to take care of the simulator setup
 include $(shell cocotb-config --makefiles)/Makefile.sim
