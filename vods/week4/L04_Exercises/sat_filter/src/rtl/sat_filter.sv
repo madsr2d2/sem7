@@ -9,26 +9,24 @@
 */
 
 module sat_filter #(
-    parameter THRESHOLD = 8,   // Threshold value
-    parameter DATA_W = 4       // Data signal bit size
-  )
-  (
-    input   logic               clk,
-    input   logic               rst,
-    input   logic [DATA_W-1:0]  in_data,    // input data signal
-    input   logic               in_valid,   // input data valid signal
-    output  logic               ovf,        // overflow signal
-    output  logic               out_valid,  // valid output signal
-    output  logic [DATA_W-1:0]  out_data    // output signal
-  );
+    parameter THRESHOLD = 8,  // Threshold value
+    parameter DATA_W    = 4   // Data signal bit size
+) (
+    input  logic              clk,
+    input  logic              rst,
+    input  logic [DATA_W-1:0] in_data,    // input data signal
+    input  logic              in_valid,   // input data valid signal
+    output logic              ovf,        // overflow signal
+    output logic              out_valid,  // valid output signal
+    output logic [DATA_W-1:0] out_data    // output signal
+);
 
   localparam threshold_val = THRESHOLD;
 
   // Generate dump files because of Icarus.
-  initial
-  begin
-    $dumpfile ("sim_build/sat_filter_waves.vcd");
-    $dumpvars (0, sat_filter);
+  initial begin
+    $dumpfile("sim_build/sat_filter_waves.vcd");
+    $dumpvars(0, sat_filter);
   end
 
   // Main loop
@@ -37,20 +35,17 @@ module sat_filter #(
       ovf <= 'b0;
       out_valid <= 'b0;
       out_data <= 'b0;
-    end
-    else begin
+    end else begin
       if (in_valid === 1'b1) begin
         out_valid <= 'b1;
         if (in_data > threshold_val) begin
           out_data <= threshold_val;
           ovf <= 'b1;
-        end
-        else begin // Valid output: (in_data <= threshold_val)
+        end else begin  // Valid output: (in_data <= threshold_val)
           out_data <= in_data;
           ovf <= 'b0;
         end
-      end
-      else begin
+      end else begin
         out_valid <= 'b0;
         out_data <= 'b0;
         ovf <= 'b0;

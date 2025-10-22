@@ -39,4 +39,3 @@ async def sat_filter_default_test(dut):
 
     # Wait some time before ending test
     await ClockCycles(dut.clk, 2)
-

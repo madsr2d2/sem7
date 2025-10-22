@@ -19,7 +19,8 @@ COMPILE_ARGS += -P$(TOPLEVEL).DATA_W=$(DATA_W)
 # Defines cocotb test files
 # !!! new tests must be added without spaces, e.g.,
 # MODULE := sat_default_test,another_test,another_test !!!
-MODULE := sat_default_test
+# MODULE := sat_default_test
+MODULE := sat_random_test
 
 # Set build folder
 SIM_BUILD = $(PWD)/sim_build

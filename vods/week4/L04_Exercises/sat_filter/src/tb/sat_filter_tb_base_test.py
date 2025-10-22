@@ -1,7 +1,7 @@
-""" Saturation Filter base UVM Test.
-"""
+"""Saturation Filter base UVM Test."""
 
-import os, warnings
+import os
+import warnings
 import cocotb
 from cocotb.triggers import RisingEdge, ReadOnly
 import vsc
@@ -20,19 +20,20 @@ from uvc.ssdt.src.uvc_ssdt_seq_item import uvc_ssdt_seq_item
 # to set the default logging level before the build phase (https://github.com/pyuvm/pyuvm/discussions/39)
 _LOG_LEVELS = ["DEBUG", "CRITICAL", "ERROR", "WARNING", "INFO", "NOTSET", "NullHandler"]
 
+
 class sat_filter_tb_base_test(uvm_test):
-    """ Base test component for the Saturation Filter TB.
-    """
+    """Base test component for the Saturation Filter TB."""
 
     def __init__(self, name="sat_filter_base_test", parent=None):
-
         # ----------------------------------------------------------------------
         if os.getenv("PYUVM_LOG_LEVEL") in _LOG_LEVELS:
-            _PYUVM_LOG_LEVEL = os.getenv('PYUVM_LOG_LEVEL')
+            _PYUVM_LOG_LEVEL = os.getenv("PYUVM_LOG_LEVEL")
         else:
             _PYUVM_LOG_LEVEL = "INFO"
             if os.getenv("PYUVM_LOG_LEVEL") != None:
-                uvm_root().logger.warning(f"{'='*50}\n   Wrong value for 'PYUVM_LOG_LEVEL' in Makefile. Changing to default value: 'INFO'.\n    {'='*50}")
+                uvm_root().logger.warning(
+                    f"{'=' * 50}\n   Wrong value for 'PYUVM_LOG_LEVEL' in Makefile. Changing to default value: 'INFO'.\n    {'=' * 50}"
+                )
 
         uvm_report_object.set_default_logging_level(_PYUVM_LOG_LEVEL)
         # ----------------------------------------------------------------------
@@ -61,19 +62,18 @@ class sat_filter_tb_base_test(uvm_test):
         warnings.simplefilter("ignore")
 
     def build_phase(self):
-
         self.logger.debug("build_phase() Base Test")
         super().build_phase()
 
         # Create configuration objects
-        self.cfg = sat_filter_tb_config.create('sat_filter_base_cfg')
+        self.cfg = sat_filter_tb_config.create("sat_filter_base_cfg")
 
         # Access the DUT through the cocotb.top handle
         self.dut = cocotb.top
 
         # Instantiate Environment
         self.tb_env = sat_filter_tb_env.create("sat_filter_tb_env", self)
-        ConfigDB().set(self, 'sat_filter_tb_env', 'cfg', self.cfg)
+        ConfigDB().set(self, "sat_filter_tb_env", "cfg", self.cfg)
 
         # Create the saturation filter coverage
 
@@ -99,29 +99,38 @@ class sat_filter_tb_base_test(uvm_test):
         # --------------------------------------------------------------------------
 
         # Instance factory overrides to insert the correct DATA_WIDTH
-        uvm_factory().set_inst_override_by_type(uvc_ssdt_seq_item, ssdt_seq_item_override(self.cfg.ssdt_prod_cfg.DATA_WIDTH), "*uvc_ssdt_producer*")
-        uvm_factory().set_inst_override_by_type(uvc_ssdt_seq_item, ssdt_seq_item_override(self.cfg.ssdt_cons_cfg.DATA_WIDTH), "*uvc_ssdt_consumer*")
+        uvm_factory().set_inst_override_by_type(
+            uvc_ssdt_seq_item,
+            ssdt_seq_item_override(self.cfg.ssdt_prod_cfg.DATA_WIDTH),
+            "*uvc_ssdt_producer*",
+        )
+        uvm_factory().set_inst_override_by_type(
+            uvc_ssdt_seq_item,
+            ssdt_seq_item_override(self.cfg.ssdt_cons_cfg.DATA_WIDTH),
+            "*uvc_ssdt_consumer*",
+        )
 
     def connect_phase(self):
-
         self.logger.debug("connect_phase() Base Test")
         super().connect_phase()
 
-        self.ssdt_prod_if.connect(clk_signal=self.dut.clk,
-                                  reset_signal=self.dut.rst,
-                                  valid_signal=self.dut.in_valid,
-                                  data_signal=self.dut.in_data
-                                  )
+        self.ssdt_prod_if.connect(
+            clk_signal=self.dut.clk,
+            reset_signal=self.dut.rst,
+            valid_signal=self.dut.in_valid,
+            data_signal=self.dut.in_data,
+        )
 
-        self.ssdt_cons_if.connect(clk_signal=self.dut.clk,
-                                  reset_signal=self.dut.rst,
-                                  valid_signal=self.dut.out_valid,
-                                  data_signal=self.dut.out_data
-                                  )
+        self.ssdt_cons_if.connect(
+            clk_signal=self.dut.clk,
+            reset_signal=self.dut.rst,
+            valid_signal=self.dut.out_valid,
+            data_signal=self.dut.out_data,
+        )
 
     # Monitor loop to trigger the sample mechanism of the ovf signal
     async def monitor_loop_ovf(self):
-        """ Monitor loop for overflow signal"""
+        """Monitor loop for overflow signal"""
         while True:
             await RisingEdge(self.dut.clk)
             await ReadOnly()
@@ -129,7 +138,6 @@ class sat_filter_tb_base_test(uvm_test):
             # Sample whenever 'valid' == 1
 
     async def run_phase(self):
-
         self.logger.debug(f"run_phase() Base Test")
         await super().run_phase()
 
@@ -148,7 +156,6 @@ class sat_filter_tb_base_test(uvm_test):
         await self.trigger_reset()
 
     def report_phase(self):
-
         self.logger.debug("report_phase() Base Test")
         super().report_phase()
 
@@ -174,9 +181,8 @@ class sat_filter_tb_base_test(uvm_test):
         self.logger.debug(f"Resetting DONE.")
 
     def setup_pyvsc_coverage_report(self):
-
         # Writing coverage report in (.txt format)
-        f = open(f'sim_build/{self.get_type_name()}_cov.txt', "w")
+        f = open(f"sim_build/{self.get_type_name()}_cov.txt", "w")
         f.write(f"Coverage report for {self.get_type_name()} \n")
         f.write("------------------------------------------------\n \n")
         vsc.report_coverage(fp=f, details=True)
@@ -185,18 +191,16 @@ class sat_filter_tb_base_test(uvm_test):
         # writing coverage report in xml-format
         # Destination for coverage data
         _SIM_BUILD_FOLDER_ = os.getenv("SIM_BUILD", default="sim_build")
-        uvm_root().logger.debug(f"{'='*50}\n 'SIM_BUILD' is '{_SIM_BUILD_FOLDER_}'.\n    {'='*50}")
+        uvm_root().logger.debug(
+            f"{'=' * 50}\n 'SIM_BUILD' is '{_SIM_BUILD_FOLDER_}'.\n    {'=' * 50}"
+        )
 
-        filename = f'{_SIM_BUILD_FOLDER_}/{self.get_type_name()}_cov.xml'
+        filename = f"{_SIM_BUILD_FOLDER_}/{self.get_type_name()}_cov.xml"
         fmt = "xml"  # Format of the coverage data. ‘xml’ and ‘libucis’ supported
         # Path to a library implementing the UCIS C API (default=None)
         libucis = None
 
-        vsc.write_coverage_db(
-            filename,
-            fmt,
-            libucis
-        )
+        vsc.write_coverage_db(filename, fmt, libucis)
 
         # For each file only information regarding the test will show
         vsc.impl.coverage_registry.CoverageRegistry.clear()
