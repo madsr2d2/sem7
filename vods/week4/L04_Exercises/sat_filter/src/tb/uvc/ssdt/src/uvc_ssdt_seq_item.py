@@ -8,11 +8,9 @@ from pyuvm import uvm_sequence_item
 
 @vsc.randobj
 class uvc_ssdt_seq_item(uvm_sequence_item):
-    """ SSDT-UVC base sequence item with constraints.
-    """
+    """SSDT-UVC base sequence item with constraints."""
 
     def __init__(self, name):
-
         super().__init__(name)
 
         # Transaction objects
@@ -20,15 +18,16 @@ class uvc_ssdt_seq_item(uvm_sequence_item):
         self.data = vsc.rand_bit_t(64)
 
     def __eq__(self, other) -> bool:
-        """ defines how sequence items are compared. """
+        """defines how sequence items are compared."""
         if isinstance(other, uvc_ssdt_seq_item):
-            return (self.data == other.data)
+            return self.data == other.data
         else:
             return False
 
     def __str__(self) -> str:
-        """ defines output string when printing sequence item. """
+        """defines output string when printing sequence item."""
         if self.data is None:
             self.data = 0
 
-        return (f"{self.get_name()} : data = {self.data};")
+        return f"{self.get_name()} : data = {self.data};"
+
