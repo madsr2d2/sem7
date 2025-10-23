@@ -12,10 +12,9 @@ class uvc_ssdt_consumer_driver(uvc_ssdt_base_driver):
 
         while True:
             await ReadOnly()
-            if int(self.vif.valid.value) == "1":
+            if int(self.vif.valid.value) == 1:
                 self.rsp.data = self.vif.data.value
                 await RisingEdge(self.cfg.vif.clk)
                 break
             await RisingEdge(self.cfg.vif.clk)
         self.logger.debug(f"CONSUMER (rsp): data = {self.rsp}")
-

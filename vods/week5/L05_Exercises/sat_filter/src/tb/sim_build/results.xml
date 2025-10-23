@@ -1,0 +1,8 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1761197895" />
+    <testcase name="test_sat_filter_default_seq" classname="test_sat_filter_default_seq" file="/home/madsr2d2/sem7/vods/.venv/vods/lib/python3.12/site-packages/pyuvm/extension_classes.py" lineno="17" time="0.010166406631469727" sim_time_ns="2.5" ratio_time="245.90792898853218">
+      <failure error_type="AttributeError" error_msg="'Logic' object has no attribute 'binstr'" />
+    </testcase>
+  </testsuite>
+</testsuites>
