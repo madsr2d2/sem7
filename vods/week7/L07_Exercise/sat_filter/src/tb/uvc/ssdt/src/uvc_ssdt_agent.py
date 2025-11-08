@@ -1,4 +1,4 @@
-""" SSDT Agent.
+"""SSDT Agent.
 
 - Provides protocol specific tasks to generate transactions, check the results and perform coverage.
 - UVM agent encapsulates the Sequencer, Driver and Monitor into a single entity.
@@ -8,7 +8,14 @@
     - knobs to turn on features such as functional coverage, and other similar parameters.
 """
 
-from pyuvm import uvm_agent, uvm_active_passive_enum, uvm_analysis_port, uvm_sequencer, uvm_factory, ConfigDB
+from pyuvm import (
+    uvm_agent,
+    uvm_active_passive_enum,
+    uvm_analysis_port,
+    uvm_sequencer,
+    uvm_factory,
+    ConfigDB,
+)
 from .uvc_ssdt_base_driver import uvc_ssdt_base_driver
 from .uvc_ssdt_producer_driver import uvc_ssdt_producer_driver
 from .uvc_ssdt_consumer_driver import uvc_ssdt_consumer_driver
@@ -16,31 +23,33 @@ from .uvc_ssdt_monitor import uvc_ssdt_monitor
 from .uvc_ssdt_coverage import uvc_ssdt_coverage
 
 from .uvc_ssdt_seq_item import uvc_ssdt_seq_item
-from .ssdt_common import ssdt_seq_item_override, SequenceItemOverride, uvc_ssdt_type_enum
+from .ssdt_common import (
+    ssdt_seq_item_override,
+    SequenceItemOverride,
+    uvc_ssdt_type_enum,
+)
 
 
 class uvc_ssdt_agent(uvm_agent):
-    """ UVM agent for SSDT.
-    """
+    """UVM agent for SSDT."""
 
     def __init__(self, name="ssdt_agent", parent=None):
-
         super().__init__(name, parent)
 
         # Declaration of components
-        self.cfg = None         # Configuration object
-        self.sequencer = None   # Sequencer handler
-        self.monitor = None     # Monitor handler
-        self.driver = None      # Driver handler
+        self.cfg = None  # Configuration object
+        self.sequencer = None  # Sequencer handler
+        self.monitor = None  # Monitor handler
+        self.driver = None  # Driver handler
 
-        self.analysis_port = None   # Analysis Port handler
+        self.analysis_port = None  # Analysis Port handler
 
         # Define the coverage handle
+        self.coverage = None
 
         self.logger.debug("Agent initialized.")
 
     def build_phase(self):
-
         self.logger.info(f"Building Agent {self.get_name()}...")
         super().build_phase()
 
@@ -50,9 +59,10 @@ class uvc_ssdt_agent(uvm_agent):
         # Build based on the type of the agent (active/passive)
 
         # If ACTIVE build driver and sequencer, and passes handles to 'cfg'
-        self.logger.debug(f" Agent < {self.get_name()} > will be configured as {self.cfg.is_active}")
+        self.logger.debug(
+            f" Agent < {self.get_name()} > will be configured as {self.cfg.is_active}"
+        )
         if self.cfg.is_active == uvm_active_passive_enum.UVM_ACTIVE:
-
             # Instantiate Driver and pass handler to ConfigDB
             self.logger.debug(f"Creating Driver...")
 
@@ -71,7 +81,9 @@ class uvc_ssdt_agent(uvm_agent):
         # Update the sequence item width
         if self.cfg.seq_item_override == SequenceItemOverride.DEFAULT:
             self.logger.info(f"Agent - inside override: {self.cfg.DATA_WIDTH}!")
-            uvm_factory().set_type_override_by_type(uvc_ssdt_seq_item, ssdt_seq_item_override(self.cfg.DATA_WIDTH))
+            uvm_factory().set_type_override_by_type(
+                uvc_ssdt_seq_item, ssdt_seq_item_override(self.cfg.DATA_WIDTH)
+            )
 
         # Create instance of Monitor and pass handle to ConfigDB
         self.logger.debug(f"Creating Monitor...")
@@ -80,6 +92,8 @@ class uvc_ssdt_agent(uvm_agent):
         self.logger.debug(f"Monitor created.")
 
         # Create instance of coverage collector and pass handle to ConfigDB
+        self.coverage = uvc_ssdt_coverage.create("coverage", self)
+        ConfigDB().set(self, "coverage", "cfg", self.cfg)
 
         # Create instance of Analysis Port
         self.analysis_port = uvm_analysis_port("analysis_port", self)
@@ -87,7 +101,6 @@ class uvc_ssdt_agent(uvm_agent):
         self.logger.debug(f"Agent {self.get_name()} built!!")
 
     def connect_phase(self):
-
         self.logger.debug(f"connect_phase() Agent")
         super().connect_phase()
 
@@ -99,3 +112,4 @@ class uvc_ssdt_agent(uvm_agent):
         self.monitor.mon_analysis_port.connect(self.analysis_port)
 
         # Connect Coverage collector
+        self.monitor.mon_analysis_port.connect(self.coverage.analysis_export)

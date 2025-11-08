@@ -1,0 +1,6 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1761837591" />
+    <testcase name="test_sat_filter_default_seq" classname="test_sat_filter_default_seq" file="/home/madsr2d2/sem7/vods/.venv/vods/lib/python3.12/site-packages/cocotb/decorators.py" lineno="17" time="0.03859567642211914" sim_time_ns="62.501" ratio_time="1619.378277411942" />
+  </testsuite>
+</testsuites>

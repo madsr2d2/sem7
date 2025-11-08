@@ -1,0 +1,21 @@
+# AGENTS Guide
+- Root workspace: /home/madsr2d2/sem7
+- Core repo: vods/week9/L09_Exercise/marb/src
+- Python env: python3 -m venv .venv && source .venv/bin/activate
+- Install deps: pip install -r vods/week9/L09_Exercise/marb/src/bin/requirements.txt
+- Smoke test: make -C vods/week9/L09_Exercise/marb/src/tb SIM=icarus MODULE=tests.cl_marb_basic_test
+- Single test: swap MODULE=tests.<scenario> in same make invocation
+- Clean artifacts: make -C vods/week9/L09_Exercise/marb/src/tb clean
+- Coverage flow: make -C vods/week9/L09_Exercise/marb/src/tb coverage
+- Ref model: gcc builds via Makefile; keep CFLAGS=-Wall clean
+- SystemVerilog indent: two spaces; align port lists; uppercase parameters
+- SystemVerilog regs: declare as logic; keep packages named pkg_<block>_types
+- Python style: PEP8, four-space indent, snake_case funcs, cl_* class prefixes
+- Imports: stdlib, third-party, local groups separated by blank lines
+- Formatting: run black for major Python edits; avoid trailing whitespace
+- Types: add type hints where practical; favor dataclasses for structured data
+- Naming tests: place scenarios under tests/ as tests.<block>_<scenario>_test
+- Error handling: raise explicit exceptions; log via pyuvm rather than print
+- Logging: respect PYUVM_LOG_LEVEL (default INFO) before enabling DEBUG
+- Coverage artifacts: sim_build/merge_cov.xml via pyucis merge/view targets
+- Cursor/Copilot: no additional rules present in this workspace

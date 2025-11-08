@@ -1,0 +1,8 @@
+<testsuites name="results">
+  <testsuite name="all" package="all">
+    <property name="random_seed" value="1762269312" />
+    <testcase name="cl_marb_basic_test" classname="tests.cl_marb_basic_test" file="/home/madsr2d2/sem7/vods/.venv/vods/lib/python3.12/site-packages/cocotb/decorators.py" lineno="10" time="0.005671501159667969" sim_time_ns="6.001" ratio_time="1058.0972887170003">
+      <failure message="Test failed with RANDOM_SEED=1762269312" />
+    </testcase>
+  </testsuite>
+</testsuites>

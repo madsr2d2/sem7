@@ -29,7 +29,8 @@ PYTHON_VERSION := $(shell $(LOCAL_PYTHON_BIN) -c "import sys; print(f'python{sys
 export PYTHON_H_HOME = $(PYTHON_PREFIX)/include/$(PYTHON_VERSION)
 export PYTHON_LIB = $(VIRTUAL_ENV)/lib/$(PYTHON_VERSION)/:$(REF_MODEL_BUILDDIR):$(TB_TESTS_DIR)
 
-export PYUVM_LOG_LEVEL := INFO
+# export PYUVM_LOG_LEVEL := INFO
+export PYUVM_LOG_LEVEL := DEBUG
 
 # --------------------- COCOTB ARGS --------------------------------------
 
